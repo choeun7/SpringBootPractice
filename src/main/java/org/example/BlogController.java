@@ -2,6 +2,7 @@ package org.example;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -30,10 +31,10 @@ public class BlogController {
         return a;
     }
 
-    @GetMapping("/article/1")
-    public Object getArticle() {
+    @GetMapping("/article/{number}")
+    public Object getArticle(@PathVariable int number) {    //다른 이름으로 쓰고 싶으면 int articleNumber로 변경 가능
         GetArticleResponse r = new GetArticleResponse();
-        r.number = 1;
+        r.num = number;
         r.title = "즐거운 하루";
         return r;
     }
