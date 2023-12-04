@@ -3,7 +3,10 @@ package org.example;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,6 +64,24 @@ public class BlogController {
     public void postArticle(@RequestBody PostArticleRequest body) {
         System.out.println(body.title);
     }
+
+    @GetMapping("/error1/{code}")
+    public void getStatusCode1(@PathVariable int code, HttpServletResponse response) {
+        response.setStatus(code);
+    }
+
+    @GetMapping("/error2/{code}")
+    public ResponseEntity<?> getStatusCode2(@PathVariable int code) {
+        HttpStatusCode code2 = HttpStatusCode.valueOf(code);
+        return new ResponseEntity<>(code2);
+    }
+
+    @GetMapping("/error3/{code}")
+    public void getStatusCode3(@PathVariable int code) {
+        HttpStatusCode code2 = HttpStatusCode.valueOf(code);
+        throw new ResponseStatusException(code2);
+    }
+
 
 
 }
