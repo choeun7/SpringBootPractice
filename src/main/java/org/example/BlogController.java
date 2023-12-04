@@ -65,17 +65,20 @@ public class BlogController {
         System.out.println(body.title);
     }
 
+//    방법 #1: HttpServletResponse 객체의 메서드를 이용 (매개변수 위치 관계 X)
     @GetMapping("/error1/{code}")
     public void getStatusCode1(@PathVariable int code, HttpServletResponse response) {
         response.setStatus(code);
     }
 
+//    방법 #2: handler 가 ResponseEntity 를 반환하는 방법
     @GetMapping("/error2/{code}")
     public ResponseEntity<?> getStatusCode2(@PathVariable int code) {
         HttpStatusCode code2 = HttpStatusCode.valueOf(code);
         return new ResponseEntity<>(code2);
     }
 
+//    방법 #3: ResponseStatusException 을 throw 하는 방법
     @GetMapping("/error3/{code}")
     public void getStatusCode3(@PathVariable int code) {
         HttpStatusCode code2 = HttpStatusCode.valueOf(code);
