@@ -2,6 +2,7 @@ package org.example;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -15,6 +16,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.slf4j.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,11 +25,18 @@ public class BlogController {
     @Autowired
     private ArticleManager articleManager;
 
+    Logger logger = LoggerFactory.getLogger(BlogController.class);
+
     @Value("${mju.blog.articles_per_page}")
     int articlesPerPage;
 
     @GetMapping("/hello")
     public String hello() {
+        logger.debug("hello");
+        logger.info("hello");
+        logger.warn("hello");
+        logger.error("hello");
+
         return "world" + articlesPerPage;
     }
 
