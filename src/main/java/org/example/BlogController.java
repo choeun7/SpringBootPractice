@@ -2,6 +2,7 @@ package org.example;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class BlogController {
+
+    @Autowired
+    private ArticleManager articleManager;
+
     @Value("${mju.blog.articles_per_page}")
     int articlesPerPage;
 
@@ -31,21 +36,6 @@ public class BlogController {
         return articlesPerPage;
     }
 
-    @GetMapping("/article/titles")
-    public Object getArticleTitles() {
-        ArrayList<String> a = new ArrayList();
-        a.add("제목1");
-        a.add("제목2");
-        return a;
-    }
-
-    @GetMapping("/article/{number}")
-    public Object getArticle(@PathVariable int number) {    //다른 이름으로 쓰고 싶으면 int articleNumber로 변경 가능
-        GetArticleResponse r = new GetArticleResponse();
-        r.num = number;
-        r.title = "즐거운 하루";
-        return r;
-    }
 
 //    @PostMapping("/article")
 //    public void postArticle(HttpServletRequest request, HttpServletResponse response)
@@ -59,11 +49,6 @@ public class BlogController {
 //        response.addHeader("MY_HEADER", "MY_VALUE");
 //        response.getOutputStream().println("Hello");
 //    }
-
-    @PostMapping("/article")
-    public void postArticle(@RequestBody PostArticleRequest body) {
-        System.out.println(body.title);
-    }
 
 //    방법 #1: HttpServletResponse 객체의 메서드를 이용 (매개변수 위치 관계 X)
     @GetMapping("/error1/{code}")
@@ -85,6 +70,21 @@ public class BlogController {
         throw new ResponseStatusException(code2);
     }
 
+    @GetMapping("/article/titles")
+    public Object getArticleTitles() {
+        return articleManager.getTitles();
+    }
+    @GetMapping("/article/{number}")
+    public Object getArticle(@PathVariable int number) {
+        GetArticleResponse r = new GetArticleResponse();
+        r.num = number;
+        r.title = articleManager.getTitleAt(number);
+        return r;
+    }
+    @PostMapping("/article")
+    public void postArticle(@RequestBody PostArticleRequest body) {
+        articleManager.getTitles().add(body.title);
+    }
 
 
 }
