@@ -4,3 +4,11 @@ server:
 mju:
   blog:
     articles_per_page: 5
+
+logging:
+  level:
+    root: INFO
+    org.example.BlogController: DEBUG
+  file:
+    name: /mylogdir/mylog.txt
+    max-size: 1KB

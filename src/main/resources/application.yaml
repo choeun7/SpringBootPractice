@@ -10,5 +10,5 @@ logging:
     root: INFO
     org.example.BlogController: DEBUG
   file:
-    name: mylog.txt
+    name: /mylogdir/mylog.txt
     max-size: 1KB
